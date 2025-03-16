@@ -3,11 +3,13 @@ package br.com.ramirosneto.exchanges.app.presentation.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
+import br.com.ramirosneto.exchanges.app.domain.repository.ExchangeRepository
 import br.com.ramirosneto.exchanges.app.domain.usecase.GetExchangesUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -27,13 +29,15 @@ class ExchangeViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private lateinit var repository: ExchangeRepository
     private lateinit var getExchangesUseCase: GetExchangesUseCase
     private lateinit var viewModel: ExchangeViewModel
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        getExchangesUseCase = mockk()
+        repository = mockk(relaxed = true)
+        getExchangesUseCase = mockk(relaxed = true)
         viewModel = ExchangeViewModel(getExchangesUseCase)
     }
 
@@ -44,16 +48,13 @@ class ExchangeViewModelTest {
 
     @Test
     fun `getExchanges - success`() = runTest {
-        // Arrange
         val mockExchanges = listOf(
             Exchange("USD", "United States Dollar", "", 2.5),
             Exchange("EUR", "Euro", "", 1.5)
         )
-        coEvery { getExchangesUseCase() } returns any()
+        coEvery { getExchangesUseCase() } returns flowOf(mockExchanges)
 
-        // Act
         viewModel.exchanges.test {
-            // Assert
             val firstItem = awaitItem()
             assertEquals(emptyList<Exchange>(), firstItem)
             testDispatcher.scheduler.advanceUntilIdle()
@@ -64,12 +65,9 @@ class ExchangeViewModelTest {
 
     @Test
     fun `getExchanges - error`() = runTest {
-        // Arrange
         coEvery { getExchangesUseCase() } throws Exception()
 
-        // Act
         viewModel.error.test {
-            // Assert
             val firstItem = awaitItem()
             assertEquals(null, firstItem)
             testDispatcher.scheduler.advanceUntilIdle()
@@ -81,13 +79,13 @@ class ExchangeViewModelTest {
 
     @Test
     fun `isLoading - success`() = runTest {
-        // Arrange
+        val mockExchanges = listOf(
+            Exchange("USD", "United States Dollar", "", 2.5),
+            Exchange("EUR", "Euro", "", 1.5)
+        )
+        coEvery { getExchangesUseCase() } returns flowOf(mockExchanges)
 
-        coEvery { getExchangesUseCase() } returns any()
-
-        // Act
         viewModel.isLoading.test {
-            // Assert
             val firstItem = awaitItem()
             assertEquals(true, firstItem)
             testDispatcher.scheduler.advanceUntilIdle()
@@ -98,12 +96,9 @@ class ExchangeViewModelTest {
 
     @Test
     fun `isLoading - error`() = runTest {
-        // Arrange
         coEvery { getExchangesUseCase() } throws Exception()
 
-        // Act
         viewModel.isLoading.test {
-            // Assert
             val firstItem = awaitItem()
             assertEquals(true, firstItem)
             testDispatcher.scheduler.advanceUntilIdle()
