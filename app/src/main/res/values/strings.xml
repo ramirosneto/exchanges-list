@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">exchanges-list</string>
+    <string name="exchange_details">Exchange Details</string>
 </resources>

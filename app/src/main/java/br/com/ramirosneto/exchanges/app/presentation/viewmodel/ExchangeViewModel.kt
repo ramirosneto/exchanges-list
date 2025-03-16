@@ -3,13 +3,13 @@ package br.com.ramirosneto.exchanges.app.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
-import br.com.ramirosneto.exchanges.app.data.remote.repository.ExchangeRepository
+import br.com.ramirosneto.exchanges.app.domain.usecase.GetExchangesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ExchangeViewModel(private val repository: ExchangeRepository) : ViewModel() {
+class ExchangeViewModel(private val getExchangesUseCase: GetExchangesUseCase) : ViewModel() {
 
     private val _exchanges = MutableStateFlow<List<Exchange>>(emptyList())
     val exchanges: StateFlow<List<Exchange>> get() = _exchanges
@@ -29,7 +29,7 @@ class ExchangeViewModel(private val repository: ExchangeRepository) : ViewModel(
 
         viewModelScope.launch {
             try {
-                repository.getExchanges().collect {
+                getExchangesUseCase.invoke().collect {
                     _exchanges.value = it
                 }
                 _error.value = null

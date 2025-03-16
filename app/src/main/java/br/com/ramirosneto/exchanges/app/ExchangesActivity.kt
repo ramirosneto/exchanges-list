@@ -11,7 +11,7 @@ import br.com.ramirosneto.exchanges.app.presentation.ui.ExchangeDetailScreen
 import br.com.ramirosneto.exchanges.app.presentation.ui.ExchangeListScreen
 import br.com.ramirosneto.exchanges.app.presentation.ui.theme.ExchangeslistTheme
 
-class MainActivity : ComponentActivity() {
+class ExchangesActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,7 +1,9 @@
 package br.com.ramirosneto.exchanges.app.di
 
+import br.com.ramirosneto.exchanges.app.data.remote.ExchangeRepositoryImpl
 import br.com.ramirosneto.exchanges.app.data.remote.api.ApiService
-import br.com.ramirosneto.exchanges.app.data.remote.repository.ExchangeRepository
+import br.com.ramirosneto.exchanges.app.domain.repository.ExchangeRepository
+import br.com.ramirosneto.exchanges.app.domain.usecase.GetExchangesUseCase
 import br.com.ramirosneto.exchanges.app.presentation.viewmodel.ExchangeViewModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -27,7 +29,11 @@ object AppModule {
     }
 
     val repositoryModule = module {
-        single { ExchangeRepository(get()) }
+        single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
+    }
+
+    val useCaseModule = module {
+        factory { GetExchangesUseCase(get()) }
     }
 
     val viewModelModule = module {

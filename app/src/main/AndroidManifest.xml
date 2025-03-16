@@ -15,8 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Exchangeslist"
         tools:targetApi="31">
+
+        <uses-library android:name="androidx.test.runner" />
+
         <activity
-            android:name=".MainActivity"
+            android:name=".ExchangesActivity"
             android:exported="true"
             android:theme="@style/Theme.Exchangeslist">
             <intent-filter>
