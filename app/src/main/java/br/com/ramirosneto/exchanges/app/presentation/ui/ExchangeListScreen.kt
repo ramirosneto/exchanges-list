@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
@@ -131,6 +132,7 @@ fun ExchangeItem(exchange: Exchange, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
+            .testTag("ExchangeItem")
             .clickable { onClick() },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
