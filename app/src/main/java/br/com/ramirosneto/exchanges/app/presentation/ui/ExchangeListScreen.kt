@@ -37,7 +37,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
+import br.com.ramirosneto.exchanges.app.presentation.model.ExchangeDTO
 import br.com.ramirosneto.exchanges.app.presentation.viewmodel.ExchangeViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -112,7 +112,7 @@ fun ExchangeListScreen(navController: NavController) {
                         items(exchanges.size) { index ->
                             val exchange = exchanges[index]
                             ExchangeItem(exchange) {
-                                navController.navigate("exchangeDetail/${exchange.exchangeId}")
+                                navController.navigate("exchangeDetail/${exchange.id}")
                             }
                         }
                     }
@@ -127,7 +127,7 @@ fun ExchangeListScreen(navController: NavController) {
 }
 
 @Composable
-fun ExchangeItem(exchange: Exchange, onClick: () -> Unit) {
+fun ExchangeItem(exchange: ExchangeDTO, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,7 +143,7 @@ fun ExchangeItem(exchange: Exchange, onClick: () -> Unit) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = exchange.name.orEmpty(), style = MaterialTheme.typography.bodyLarge)
-            Text(text = "ID: ${exchange.exchangeId}")
+            Text(text = "ID: ${exchange.id}")
             Text(text = "Volume 1 USD: ${exchange.volume1dayUSD}")
         }
     }

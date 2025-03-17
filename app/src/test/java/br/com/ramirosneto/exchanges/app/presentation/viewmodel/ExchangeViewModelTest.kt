@@ -2,9 +2,9 @@ package br.com.ramirosneto.exchanges.app.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
-import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
 import br.com.ramirosneto.exchanges.app.domain.repository.ExchangeRepository
 import br.com.ramirosneto.exchanges.app.domain.usecase.GetExchangesUseCase
+import br.com.ramirosneto.exchanges.app.presentation.model.ExchangeDTO
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -49,14 +49,14 @@ class ExchangeViewModelTest {
     @Test
     fun `getExchanges - success`() = runTest {
         val mockExchanges = listOf(
-            Exchange("USD", "United States Dollar", "", 2.5),
-            Exchange("EUR", "Euro", "", 1.5)
+            ExchangeDTO("USD", "United States Dollar", "", "2.5"),
+            ExchangeDTO("EUR", "Euro", "", "1.5")
         )
         coEvery { getExchangesUseCase() } returns flowOf(mockExchanges)
 
         viewModel.exchanges.test {
             val firstItem = awaitItem()
-            assertEquals(emptyList<Exchange>(), firstItem)
+            assertEquals(emptyList<ExchangeDTO>(), firstItem)
             testDispatcher.scheduler.advanceUntilIdle()
             val secondItem = awaitItem()
             assertEquals(mockExchanges, secondItem)
@@ -80,8 +80,8 @@ class ExchangeViewModelTest {
     @Test
     fun `isLoading - success`() = runTest {
         val mockExchanges = listOf(
-            Exchange("USD", "United States Dollar", "", 2.5),
-            Exchange("EUR", "Euro", "", 1.5)
+            ExchangeDTO("USD", "United States Dollar", "", "2.5"),
+            ExchangeDTO("EUR", "Euro", "", "1.5")
         )
         coEvery { getExchangesUseCase() } returns flowOf(mockExchanges)
 

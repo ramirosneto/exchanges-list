@@ -22,7 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
+import br.com.ramirosneto.exchanges.app.presentation.model.ExchangeDTO
 import br.com.ramirosneto.exchanges.app.presentation.viewmodel.ExchangeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ExchangeDetailScreen(exchangeId: String, navController: NavController) {
     val viewModel: ExchangeViewModel = koinViewModel()
     val exchanges by viewModel.exchanges.collectAsState()
-    val exchange = exchanges.find { it.exchangeId == exchangeId }
+    val exchange = exchanges.find { it.id == exchangeId }
 
     Scaffold(
         topBar = {
@@ -53,7 +53,7 @@ fun ExchangeDetailScreen(exchangeId: String, navController: NavController) {
 }
 
 @Composable
-fun ExchangeDetailContent(innerPadding: PaddingValues, exchange: Exchange) {
+fun ExchangeDetailContent(innerPadding: PaddingValues, exchange: ExchangeDTO) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +61,7 @@ fun ExchangeDetailContent(innerPadding: PaddingValues, exchange: Exchange) {
     ) {
         Text(text = exchange.name.orEmpty(), style = MaterialTheme.typography.bodyLarge)
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "ID: ${exchange.exchangeId}")
+        Text(text = "ID: ${exchange.id}")
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Volume 1 Day USD: ${exchange.volume1dayUSD}")
     }

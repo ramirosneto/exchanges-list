@@ -2,7 +2,7 @@ package br.com.ramirosneto.exchanges.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.ramirosneto.exchanges.app.data.remote.model.Exchange
+import br.com.ramirosneto.exchanges.app.presentation.model.ExchangeDTO
 import br.com.ramirosneto.exchanges.app.domain.usecase.GetExchangesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class ExchangeViewModel(private val getExchangesUseCase: GetExchangesUseCase) : ViewModel() {
 
-    private val _exchanges = MutableStateFlow<List<Exchange>>(emptyList())
-    val exchanges: StateFlow<List<Exchange>> get() = _exchanges
+    private val _exchanges = MutableStateFlow<List<ExchangeDTO>>(emptyList())
+    val exchanges: StateFlow<List<ExchangeDTO>> get() = _exchanges
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
